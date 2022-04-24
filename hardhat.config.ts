@@ -14,6 +14,8 @@ import {
   getContractByteCode,
 } from "@etherspot/contracts";
 
+import "xdeployer";
+
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-ethers";
@@ -34,6 +36,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
     console.log(account.address);
   }
 });
+
 task("mchain", "multi-chain tests", async (_, { Sdk }) => {
   console.log("ContractNames", ContractNames);
   console.log(
@@ -45,6 +48,8 @@ task("mchain", "multi-chain tests", async (_, { Sdk }) => {
     getContractAddress(ContractNames.PersonalAccountRegistry, "4386")
   );
 });
+
+// require import "@muzamint/hardhat-etherspot";
 //  window is not defined (only for browser app)
 task("meta", "Run all etherspot transaction tests", async (_, { Sdk }) => {
   if (!MetaMaskWalletProvider.detect()) {
@@ -63,7 +68,7 @@ task("meta", "Run all etherspot transaction tests", async (_, { Sdk }) => {
   console.log("Native Currencies:", nativeCurrencies);
 });
 
-// needs import "@muzamint/hardhat-etherspot";
+// require import "@muzamint/hardhat-etherspot";
 task("tx", "Run all etherspot transaction tests", async (_, { Sdk }) => {
   const privateKey =
     "0x398dd483a53fef9b5b37c142bdbabcef69a9b5e133885ffb62981f6484ee7aa1";
@@ -130,6 +135,7 @@ task("tx", "Run all etherspot transaction tests", async (_, { Sdk }) => {
   }
 });
 
+// require import "@muzamint/hardhat-etherspot";
 task("sdk", "Run all etherspot tests", async (_, { Sdk }) => {
   const sdk = new Sdk(randomPrivateKey(), {
     env: EnvNames.TestNets,
@@ -174,7 +180,7 @@ task("sdk", "Run all etherspot tests", async (_, { Sdk }) => {
 const config: HardhatUserConfig = {
   defaultNetwork,
   solidity: {
-    version: "0.8.5",
+    version: "0.8.13",
     settings: {
       optimizer: {
         enabled: true,
@@ -183,6 +189,9 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
+    localhost: {
+      url: "[::1]",
+    },
     polygon: {
       url: process.env.POLYGON_URL || "",
       chainId: 137,

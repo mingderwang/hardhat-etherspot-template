@@ -1,19 +1,16 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    console.log("Greeter deployed to:", greeter.address);
+describe("MingCollectible", function () {
+  it("should return an NFT token with a correct name and symbol", async function () {
+    const MingCL = await ethers.getContractFactory("MingCollectible");
+    const mcl = await MingCL.deploy();
+    console.log("MingCollectible deployed to:", mcl.address);
 
-    expect(await greeter.greet()).to.equal("Hello, world!");
-
-    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+    expect(await mcl.name()).to.equal("MingCollectible");
+    expect(await mcl.symbol()).to.equal("MCL");
 
     // wait until the transaction is mined
-    await setGreetingTx.wait();
-
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
+    //await setGreetingTx.wait();
   });
 });
