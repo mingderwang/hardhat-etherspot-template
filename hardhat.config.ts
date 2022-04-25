@@ -1,10 +1,13 @@
 import * as dotenv from "dotenv";
 
 import {
-  randomPrivateKey,
-  NetworkNames,
+  Sdk,
+  Env,
   EnvNames,
   MetaMaskWalletProvider,
+  NetworkNames,
+  sleep,
+  randomPrivateKey,
 } from "etherspot";
 
 import {
@@ -14,7 +17,7 @@ import {
   getContractByteCode,
 } from "@etherspot/contracts";
 
-import "xdeployer";
+import "xdeployer"; // for multi-chain deployment
 
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomiclabs/hardhat-etherscan";
@@ -34,6 +37,173 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
   for (const account of accounts) {
     console.log(account.address);
+  }
+});
+
+task("send2", "send to receiver", async (_, { ethers, Sdk }) => {
+  const { utils } = ethers;
+  var senderEtherspotUser: Sdk;
+  var receiverEtherspotUser: Sdk;
+
+  const logDeposits = async () => {
+    console.log(
+      "🚄 getP2pPDeposits (receiver)",
+      await receiverEtherspotUser.getP2PPaymentDeposits()
+    );
+    console.log(
+      "🚄 getP2pPDepositsi (sender)",
+      await senderEtherspotUser.getP2PPaymentDeposits()
+    );
+    senderEtherspotUser.getP2PPaymentDeposits().then((x) => {
+      console.log(
+        "-> 🚄 getP2pPDeposits.0.availableAmount",
+        utils.formatUnits(x.items[0].availableAmount.toString(), 18)
+      );
+      console.log(
+        "lockedAmount",
+        utils.formatUnits(x.items[0].lockedAmount.toString(), 18)
+      );
+      console.log(
+        "pendingAmount",
+        utils.formatUnits(x.items[0].pendingAmount.toString(), 18)
+      );
+      if (x.items[0].latestWithdrawal) {
+        console.log(
+          "latestWithdrawal.value",
+          utils.formatUnits(x.items[0].latestWithdrawal.value.toString(), 18)
+        );
+        console.log(
+          "latestWithdrawal.totalAmount",
+          utils.formatUnits(
+            x.items[0].latestWithdrawal.totalAmount.toString(),
+            18
+          )
+        );
+      }
+      console.log(
+        "totalAmount",
+        utils.formatUnits(x.items[0].totalAmount.toString(), 18)
+      );
+      console.log(
+        "withdrawAmount",
+        utils.formatUnits(x.items[0].withdrawAmount.toString(), 18)
+      );
+    });
+  };
+
+  console.log("contract name", ContractNames.ERC20Token);
+  //P2PPaymentChannel
+  const privateKeyA = randomPrivateKey();
+  const privateKeyB = randomPrivateKey();
+
+  // change default environment
+  Env.defaultName = EnvNames.TestNets;
+
+  senderEtherspotUser = new Sdk(privateKeyA, {
+    networkName: NetworkNames.Etherspot,
+  });
+  const output = await senderEtherspotUser.syncAccount();
+  console.log("user account address:", output);
+
+  senderEtherspotUser.notifications$.subscribe(async (notification) => {
+    console.log("sdk 🦋🦋🦋🦋:", notification);
+    await logDeposits();
+  });
+
+  //console.log("state", senderEtherspotUser.state);
+  console.log(
+    "senderEtherspotUser.state.p2pPaymentDepositAddress:\n",
+    senderEtherspotUser.state.p2pPaymentDepositAddress
+  );
+
+  receiverEtherspotUser = new Sdk(
+    { privateKey: privateKeyB },
+    {
+      networkName: NetworkNames.Etherspot,
+    }
+  );
+
+  receiverEtherspotUser.notifications$.subscribe(async (notification) => {
+    console.log("rec 🦋🦋🦋🦋:", notification);
+    await logDeposits();
+  });
+
+  await senderEtherspotUser
+    .topUpAccount()
+    .then(console.log)
+    .catch(console.error);
+  await receiverEtherspotUser
+    .topUpAccount()
+    .then(console.log)
+    .catch(console.error);
+
+  const hash = await senderEtherspotUser
+    .topUpPaymentDepositAccount()
+    .catch(console.error);
+
+  console.log("transaction (sender) hash", hash);
+  const hash2 = await receiverEtherspotUser
+    .topUpPaymentDepositAccount()
+    .catch(console.error);
+
+  console.log("transaction (receiver) hash", hash2);
+  sleep(5);
+
+  console.log("after sleeping 5 secs.");
+  const sender = await senderEtherspotUser.getAccount();
+  console.log("sender:", sender);
+  const receiver = await receiverEtherspotUser.getAccount();
+  console.log("receiver:", receiver.address);
+
+  console.log(
+    "👽 receiver account",
+    receiverEtherspotUser.state.accountAddress
+  );
+
+  const outputx = await senderEtherspotUser.computeContractAccount();
+
+  console.log("-> sender contract account", outputx);
+
+  const outputxx = await receiverEtherspotUser.computeContractAccount();
+
+  console.log("-> receiver contract account", outputxx);
+
+  console.log("Smart wallet", receiverEtherspotUser.state.account);
+
+  const outputSS = await senderEtherspotUser.batchDeployAccount();
+
+  console.log("-> gateway batch Sender", outputSS);
+
+  const outputRR = await receiverEtherspotUser.batchDeployAccount();
+
+  console.log("-> gateway batch Receiver", outputRR);
+
+  console.log(
+    "p2pPaymentDepositAddress (sender)",
+    senderEtherspotUser.state.p2pPaymentDepositAddress
+  );
+
+  console.log(
+    "p2pPaymentDepositAddress (receiver)",
+    receiverEtherspotUser.state.p2pPaymentDepositAddress
+  );
+
+  await senderEtherspotUser
+    .estimateGatewayBatch()
+    .then(async (result) => {
+      console.log("Estimation ", result.estimation);
+
+      // step 3 - if there is an estimated gas receive, then you can start to submit the whole batch.
+      const batchHash = (await senderEtherspotUser.submitGatewayBatch()).hash;
+      console.log("Transaction submitted, hash: ", batchHash);
+    })
+    .catch((error) => {
+      console.log("Transaction estimation failed with error ", error.message);
+    });
+
+  while (false) {
+    await new Promise((r) => setTimeout(r, 2000));
+    console.log(".");
   }
 });
 
@@ -81,7 +251,7 @@ task("tx", "Run all etherspot transaction tests", async (_, { Sdk }) => {
   const { state } = sdk;
   console.log("state", state);
 
-  await sdk.computeContractAccount({ sync: true });
+  await sdk.computeContractAccount({ sync: true }); //default is true
   console.log("Smart wallet", state.account);
   console.log("Account balances ", await sdk.getAccountBalances());
 
@@ -227,6 +397,15 @@ const config: HardhatUserConfig = {
       polygon: process.env.POLYGONSCAN_API_KEY,
       polygonMumbai: process.env.POLYGONSCAN_API_KEY,
     },
+  },
+  xdeploy: {
+    contract: "MingCollectible",
+    //    constructorArgsPath: "./deploy-args.ts",
+    salt: "de13c19b1e2ea4e3e4ef36f3c8263caff154bff3bed2e4e9320fc0f2b86719d2",
+    signer: process.env.PRIVATE_KEY,
+    networks: ["localhost"],
+    rpcUrls: ["localhost"],
+    gasLimit: 1.2 * 10 ** 6,
   },
 };
 
