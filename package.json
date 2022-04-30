@@ -10,7 +10,7 @@
   "license": "ISC",
   "devDependencies": {
     "@muzamint/hardhat-etherspot": "^0.0.3",
-    "@openzeppelin/contracts": "^4.5.0",
+    "@openzeppelin/contracts": "^4.6.0",
     "etherspot": "^1.31.0",
     "hardhat": "^2.9.3",
     "reflect-metadata": "^0.1.13",

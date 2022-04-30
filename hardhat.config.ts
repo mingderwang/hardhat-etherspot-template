@@ -30,7 +30,7 @@ import "solidity-coverage";
 import "@muzamint/hardhat-etherspot";
 
 dotenv.config();
-const defaultNetwork = "hardhat";
+const defaultNetwork = "polygonMumbai";
 
 task("privateToAddress", "Convert private key to account address")
   .addParam("privateKey", "The account's privateKey")
