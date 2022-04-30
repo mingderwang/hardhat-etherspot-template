@@ -1,4 +1,6 @@
 import * as dotenv from "dotenv";
+import chalk from "chalk";
+import EthUtil from "ethereumjs-util";
 
 import {
   Sdk,
@@ -30,6 +32,11 @@ import "@muzamint/hardhat-etherspot";
 dotenv.config();
 const defaultNetwork = "hardhat";
 
+task("privateToAddress", "Convert private key to account address")
+  .addParam("privateKey", "The account's privateKey")
+  .setAction(async (taskArg, hre) => {
+    console.log("private key:", taskArg.privateKey);
+  });
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
