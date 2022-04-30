@@ -1,3 +1,90 @@
+# Aeploy contract to multiple networks with same address
+```
+npx hardhat xdeployer
+```
+> result
+```
+Nothing to compile
+No need to generate any newer typings.
+
+The deployment is starting... Please bear with me, this may take a minute or two. Anyway, WAGMI!
+
+Your deployment parameters will lead to the following contract address: 0x8e27e27E95c05F6EF855BE81a04c7fdd0d488f77
+
+=> If this does not match your expectation, given a previous deployment, you have either changed the value of
+the salt parameter or the bytecode of the contract!
+
+
+----------------------------------------------------------
+><><><><           XDEPLOY DEPLOYMENT 1           ><><><><
+----------------------------------------------------------
+
+Deployment status: successful
+
+Network: rinkeby
+
+Chain ID: 4
+
+Contract name: SLVToken
+
+Contract creation transaction hash: https://rinkeby.etherscan.io/tx/0x0ebd341af5f29852b6d1e82bf9e3bf8859e51adef48aeb846b4d1ca072ab499b
+
+Contract address: https://rinkeby.etherscan.io/address/0x8e27e27E95c05F6EF855BE81a04c7fdd0d488f77
+
+Transaction details written to: /Users/mingderwang/src/ming/key-templates/hardhat-etherspot-template/deployments/rinkeby_deployment.json
+
+
+Your deployment parameters will lead to the following contract address: 0x8e27e27E95c05F6EF855BE81a04c7fdd0d488f77
+
+=> If this does not match your expectation, given a previous deployment, you have either changed the value of
+the salt parameter or the bytecode of the contract!
+
+
+----------------------------------------------------------
+><><><><           XDEPLOY DEPLOYMENT 2           ><><><><
+----------------------------------------------------------
+
+Deployment status: successful
+
+Network: ropsten
+
+Chain ID: 3
+
+Contract name: SLVToken
+
+Contract creation transaction hash: https://ropsten.etherscan.io/tx/0x8168ef55619f0d3ec45999520cbe8141cf1e43f2e8ba9b46859439e41c2f2ba8
+
+Contract address: https://ropsten.etherscan.io/address/0x8e27e27E95c05F6EF855BE81a04c7fdd0d488f77
+
+Transaction details written to: /Users/mingderwang/src/ming/key-templates/hardhat-etherspot-template/deployments/ropsten_deployment.json
+
+
+Your deployment parameters will lead to the following contract address: 0x8e27e27E95c05F6EF855BE81a04c7fdd0d488f77
+
+=> If this does not match your expectation, given a previous deployment, you have either changed the value of
+the salt parameter or the bytecode of the contract!
+
+
+----------------------------------------------------------
+><><><><           XDEPLOY DEPLOYMENT 3           ><><><><
+{
+----------------------------------------------------------
+
+Deployment status: successful
+
+Network: mumbai
+
+Chain ID: 80001
+
+Contract name: SLVToken
+
+Contract creation transaction hash: https://mumbai.polygonscan.com/tx/0xe0a7ab967ccbedf214a38de01df119de64de9838b29da15dbc209c5bb8fe898d
+
+Contract address: https://mumbai.polygonscan.com/address/0x8e27e27E95c05F6EF855BE81a04c7fdd0d488f77
+
+Transaction details written to: /Users/mingderwang/src/ming/key-templates/hardhat-etherspot-template/deployments/mumbai_deployment.json
+```
+
 # Advanced Sample Hardhat Project
 
 This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
