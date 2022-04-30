@@ -30,7 +30,7 @@ import "solidity-coverage";
 import "@muzamint/hardhat-etherspot";
 
 dotenv.config();
-const defaultNetwork = "localhost";
+const defaultNetwork = "polygonMumbai";
 
 task("privateToAddress", "Convert private key to account address")
   .addParam("privateKey", "The account's privateKey")
@@ -375,7 +375,7 @@ const config: HardhatUserConfig = {
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
-    mumbai: {
+    polygonMumbai: {
       url: process.env.MUMBAI_URL || "",
       chainId: 80001,
       accounts:
@@ -393,6 +393,11 @@ const config: HardhatUserConfig = {
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
+    rinkeby: {
+      url: process.env.RINKEBY_URL || "",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
@@ -400,9 +405,45 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
+      mainnet: process.env.ETHERSCAN_API_KEY,
       ropsten: process.env.ETHERSCAN_API_KEY,
+      rinkeby: process.env.ETHERSCAN_API_KEY,
+      goerli: process.env.ETHERSCAN_API_KEY,
+      kovan: process.env.ETHERSCAN_API_KEY,
+      // binance smart chain
+      bsc: "YOUR_BSCSCAN_API_KEY",
+      bscTestnet: "YOUR_BSCSCAN_API_KEY",
+      // huobi eco chain
+      heco: "YOUR_HECOINFO_API_KEY",
+      hecoTestnet: "YOUR_HECOINFO_API_KEY",
+      // fantom mainnet
+      opera: "YOUR_FTMSCAN_API_KEY",
+      ftmTestnet: "YOUR_FTMSCAN_API_KEY",
+      // optimism
+      optimisticEthereum: "YOUR_OPTIMISTIC_ETHERSCAN_API_KEY",
+      optimisticKovan: "YOUR_OPTIMISTIC_ETHERSCAN_API_KEY",
+      // polygon
       polygon: process.env.POLYGONSCAN_API_KEY,
       polygonMumbai: process.env.POLYGONSCAN_API_KEY,
+      // arbitrum
+      arbitrumOne: "YOUR_ARBISCAN_API_KEY",
+      arbitrumTestnet: "YOUR_ARBISCAN_API_KEY",
+      // avalanche
+      avalanche: "YOUR_SNOWTRACE_API_KEY",
+      avalancheFujiTestnet: "YOUR_SNOWTRACE_API_KEY",
+      // moonbeam
+      moonbeam: "YOUR_MOONBEAM_MOONSCAN_API_KEY",
+      moonriver: "YOUR_MOONRIVER_MOONSCAN_API_KEY",
+      moonbaseAlpha: "YOUR_MOONBEAM_MOONSCAN_API_KEY",
+      // harmony
+      harmony: "YOUR_HARMONY_API_KEY",
+      harmonyTest: "YOUR_HARMONY_API_KEY",
+      // xdai and sokol don't need an API key, but you still need
+      // to specify one; any string placeholder will work
+      xdai: "api-key",
+      sokol: "api-key",
+      aurora: "api-key",
+      auroraTestnet: "api-key",
     },
   },
   xdeploy: {

@@ -84,7 +84,39 @@ Contract address: https://mumbai.polygonscan.com/address/0x8e27e27E95c05F6EF855B
 
 Transaction details written to: /Users/mingderwang/src/ming/key-templates/hardhat-etherspot-template/deployments/mumbai_deployment.json
 ```
+# code verification
+## Rinkeby
+```
+$ npx hardhat verify --contract contracts/SLVToken.sol:SLVToken --network rinkeby  0x8e27e27E95c05F6EF855BE81a04c7fdd0d488f77 --constructor-args arguments.js
+Nothing to compile
+No need to generate any newer typings.
+Successfully submitted source code for contract
+contracts/SLVToken.sol:SLVToken at 0x8e27e27E95c05F6EF855BE81a04c7fdd0d488f77
+for verification on the block explorer. Waiting for verification result...
 
+Successfully verified contract SLVToken on Etherscan.
+https://rinkeby.etherscan.io/address/0x8e27e27E95c05F6EF855BE81a04c7fdd0d488f77#code
+
+```
+# Polygon Mumbai
+```
+$ npx hardhat verify --contract contracts/SLVToken.sol:SLVToken --network polygonMumbai  0x8e27e27E95c05F6EF855BE81a04c7fdd0d488f77 --constructor-args arguments.js
+Nothing to compile
+No need to generate any newer typings.
+Successfully submitted source code for contract
+contracts/SLVToken.sol:SLVToken at 0x8e27e27E95c05F6EF855BE81a04c7fdd0d488f77
+for verification on the block explorer. Waiting for verification result...
+
+Successfully verified contract SLVToken on Etherscan.
+https://mumbai.polygonscan.com/address/0x8e27e27E95c05F6EF855BE81a04c7fdd0d488f77#code
+```
+## Ropsten
+```
+✗ npx hardhat verify --contract contracts/SLVToken.sol:SLVToken --network ropsten  0x8e27e27E95c05F6EF855BE81a04c7fdd0d488f77 --constructor-args arguments.js
+Nothing to compile
+No need to generate any newer typings.
+Error in plugin @nomiclabs/hardhat-etherscan: Contract source code already verified
+```
 # Advanced Sample Hardhat Project
 
 This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
