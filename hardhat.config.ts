@@ -30,7 +30,7 @@ import "solidity-coverage";
 import "@muzamint/hardhat-etherspot";
 
 dotenv.config();
-const defaultNetwork = "polygonMumbai";
+const defaultNetwork = "localhost";
 
 task("privateToAddress", "Convert private key to account address")
   .addParam("privateKey", "The account's privateKey")
@@ -248,7 +248,7 @@ task("meta", "Run all etherspot transaction tests", async (_, { Sdk }) => {
 // require import "@muzamint/hardhat-etherspot";
 task("tx", "Run all etherspot transaction tests", async (_, { Sdk }) => {
   const privateKey =
-    "0x398dd483a53fef9b5b37c142bdbabcef69a9b5e133885ffb62981f6484ee7aa1";
+    "0x398dd483a53fef9b5b37c142bdbabcef69a9b5e133885ffb62981f6484ee7aa1"; //no money here, don't use
   var batchHash: string = "xxx";
   const sdk = new Sdk(privateKey, {
     env: EnvNames.TestNets,
@@ -367,7 +367,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     localhost: {
-      url: "[::1]",
+      url: "http://127.0.0.1:8545/",
     },
     polygon: {
       url: process.env.POLYGON_URL || "",
@@ -406,14 +406,26 @@ const config: HardhatUserConfig = {
     },
   },
   xdeploy: {
-    contract: "MingCollectible",
-    //    constructorArgsPath: "./deploy-args.ts",
+    contract: "SLVToken",
+    constructorArgsPath: "./deploy-args.ts",
     salt: "de13c19b1e2ea4e3e4ef36f3c8263caff154bff3bed2e4e9320fc0f2b86719d2",
     signer: process.env.PRIVATE_KEY,
-    networks: ["localhost"],
-    rpcUrls: ["localhost"],
+    networks: ["localhost", "ropsten", "mumbai"],
+    rpcUrls: ["http://127.0.0.1:8545/", "ropsten", "mumbai"],
     gasLimit: 1.2 * 10 ** 6,
   },
 };
+/*
+  localhost,
+  hardhat,
+  rinkeby,
+  ropsten,
+  kovan,
+  goerli,
+  bscTestnet,
+  optimismTestnet,
+  arbitrumTestnet,
+  mumbai,hecoTestnet,fantomTestnet,fuji,sokol,moonbaseAlpha,alfajores,auroraTestnet,harmonyTestnet,spark,cronosTestnet,ethMain,bscMain,optimismMain,arbitrumMain,polygon,hecoMain,fantomMain,avalanche,gnosis,moonriver,moonbeam,celo,auroraMain,harmonyMain,autobahn,fuse,cronos.
+  */
 
 export default config;
