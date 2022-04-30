@@ -375,8 +375,8 @@ const config: HardhatUserConfig = {
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
-    polygonMumbai: {
-      url: process.env.POLYGON_TEST_URL || "",
+    mumbai: {
+      url: process.env.MUMBAI_URL || "",
       chainId: 80001,
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
@@ -410,14 +410,19 @@ const config: HardhatUserConfig = {
     constructorArgsPath: "./deploy-args.ts",
     salt: "de13c19b1e2ea4e3e4ef36f3c8263caff154bff3bed2e4e9320fc0f2b86719d2",
     signer: process.env.PRIVATE_KEY,
-    networks: ["localhost", "ropsten", "mumbai"],
-    rpcUrls: ["http://127.0.0.1:8545/", "ropsten", "mumbai"],
+    networks: ["rinkeby", "ropsten", "mumbai"],
+    rpcUrls: [
+      process.env.RINKEBY_URL,
+      process.env.ROPSTEN_URL,
+      process.env.MUMBAI_URL,
+    ],
     gasLimit: 1.2 * 10 ** 6,
   },
 };
+
 /*
-  localhost,
-  hardhat,
+  localhost, // use https://127.0.0.1:8545/
+  hardhat,  // use hardhat
   rinkeby,
   ropsten,
   kovan,
@@ -425,7 +430,34 @@ const config: HardhatUserConfig = {
   bscTestnet,
   optimismTestnet,
   arbitrumTestnet,
-  mumbai,hecoTestnet,fantomTestnet,fuji,sokol,moonbaseAlpha,alfajores,auroraTestnet,harmonyTestnet,spark,cronosTestnet,ethMain,bscMain,optimismMain,arbitrumMain,polygon,hecoMain,fantomMain,avalanche,gnosis,moonriver,moonbeam,celo,auroraMain,harmonyMain,autobahn,fuse,cronos.
+  mumbai,
+  hecoTestnet,
+  fantomTestnet,
+  fuji,
+  sokol,
+  moonbaseAlpha,
+  alfajores,
+  auroraTestnet,
+  harmonyTestnet,
+  spark,
+  cronosTestnet,
+  ethMain,
+  bscMain,
+  optimismMain,
+  arbitrumMain,
+  polygon,
+  hecoMain,
+  fantomMain,
+  avalanche,
+  gnosis,
+  moonriver,
+  moonbeam,
+  celo,
+  auroraMain,
+  harmonyMain,
+  autobahn,
+  fuse,
+  cronos.
   */
 
 export default config;
